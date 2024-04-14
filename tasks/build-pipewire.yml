@@ -1,0 +1,44 @@
+---
+
+# Tasks related to building the Xrdp pipewire module
+# Once a Debian package is available, this will likely be removed.
+
+- name: install pipewire build dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ xrdp_pipewire_build_package }}"
+
+- name: determine if build dir exists
+  stat:
+    path: "{{ xrdp_pipewire_build_dir }}"
+  register: xrdp_pipewire_build_dir_stat
+
+- name: delete build dir if exists
+  file:
+    path: "{{ xrdp_pipewire_build_dir }}"
+    state: absent
+  when: xrdp_pipewire_build_dir_stat.stat.exists
+
+- name: clone pipewire-module-xrdp repo to build dir
+  git:
+    repo: "{{ xrdp_pipewire_repo }}"
+    dest: "{{ xrdp_pipewire_build_dir }}"
+
+- name: build and install pipewire module
+  ansible.builtin.shell: "{{ item }}"
+  args:
+    chdir: "{{ xrdp_pipewire_build_dir }}"
+  loop:
+    - ./bootstrap
+    - ./configure
+    - make
+    - make install
+
+# - name: package cleanup
+#   package:
+#     name: "{{ item }}"
+#     state: absent
+#     autoremove: true
+#   loop: "{{ xrdp_pipewire_build_package }}"
+#   when: xrdp_pipewire_remove_build_package

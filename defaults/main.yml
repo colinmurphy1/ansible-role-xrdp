@@ -1,0 +1,78 @@
+---
+
+# Install Xrdp and Xorg backend
+xrdp_packages:
+  - xrdp
+  - xorgxrdp
+
+# Xrdp service
+xrdp_service:
+  state: started
+  enabled: true
+
+xrdp_port: 3389
+
+# Path to the certificate and key to use
+xrdp_certificate: ""
+xrdp_certificate_key: ""
+
+# Enabled SSL protocols, recommended to leave this at TLS1.2 and TLS1.3.
+xrdp_ssl_protocols:
+  - TLSv1.2
+  - TLSv1.3
+
+# TCP send/recv buffers. Can be increased to improve performance on higher resolution sessions and sessions with audio.
+xrdp_buffers:
+  send: 32768
+  recv: 32768
+
+# Login window title
+xrdp_login_title: ""
+
+# Fix two-finger scrolling on touchpads (see https://github.com/neutrinolabs/xorgxrdp/issues/150)
+xrdp_fix_scrolling: false
+
+# Security settings
+xrdp_security:
+  # Allow root to login
+  permit_root: false
+
+  # Maximum login retries
+  max_login_retry: 4
+
+  # Restrict logon to terminal servers users group
+  group_check: true
+
+  # If group_check is set to true, this is the group that may access RDP services.
+  tsusers_group: tsusers
+
+# Session management settings
+xrdp_session:
+  # Kill disconnected sessions
+  kill_disconnected: false
+
+  # Maximum sessions
+  max_sessions: 50
+
+  # Time to wait before killing disconnected sessions in seconds, 0 disables
+  disconnected_time_limit: 0
+  
+  # Time to wait before disconnecting idle sessions, 0 disables
+  idle_time_limit: 0
+
+# Enable audio features
+xrdp_audio: true
+
+# pipewire-module-xrdp related vars
+
+xrdp_pipewire_repo: https://github.com/neutrinolabs/pipewire-module-xrdp.git
+xrdp_pipewire_build_dir: /tmp/pipewire-module-xrdp
+
+# Default package name for pipewire - this is different on Debian
+xrdp_pipewire_package: "pipewire"
+
+# Build dependencies for pipewire-module-xrdp
+xrdp_pipewire_build_package: []
+
+# Cleanup build dependencies for pipewire-module-xrdp
+# xrdp_pipewire_remove_build_package: true

@@ -1,0 +1,15 @@
+---
+
+xrdp_xorg_path: /usr/lib/xorg/Xorg
+
+xrdp_pipewire_package: "pipewire-audio"
+
+xrdp_pipewire_build_package:
+  - git
+  - libpipewire-0.3-dev
+  - libspa-0.2-dev
+  - pkg-config
+  - autotools-dev
+  - libtool
+  - make
+  - gcc

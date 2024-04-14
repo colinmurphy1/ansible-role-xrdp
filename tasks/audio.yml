@@ -1,0 +1,17 @@
+---
+
+# Audio-related tasks.
+
+- name: install pipewire package
+  package:
+    name: "{{ xrdp_pipewire_package }}"
+    state: present
+
+- name: determine if libpipewire-module-xrdp is present
+  stat:
+    path: /usr/lib/x86_64-linux-gnu/pipewire-0.3/libpipewire-module-xrdp.so
+  register: xrdp_pipewire_stat
+
+- name: build xrdp pipewire module
+  include_tasks: build-pipewire.yml
+  when: not xrdp_pipewire_stat.stat.exists

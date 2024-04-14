@@ -1,0 +1,40 @@
+---
+
+- name: include vars
+  include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: install xrdp
+  package:
+    name: "{{ item }}"
+  loop: "{{ xrdp_packages }}"
+
+- name: xrdp service
+  service:
+    name: xrdp
+    state: "{{ xrdp_service.state }}"
+    enabled: "{{ xrdp_service.enabled }}"
+
+- name: configure xrdp
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+    owner: root
+    group: root
+  loop:
+    - { src: "xrdp.ini.j2", dest: "/etc/xrdp/xrdp.ini" }
+    - { src: "sesman.ini.j2", dest: "/etc/xrdp/sesman.ini" }
+  notify: restart xrdp
+
+# http://c-nergy.be/blog/?p=12043
+- name: colord polkit profile (Debian/Ubuntu)
+  copy:
+    src: 45-allow-colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: xrdp audio tasks
+  include_tasks: audio.yml
+  when: xrdp_audio == true
