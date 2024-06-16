@@ -14,13 +14,13 @@ DefaultWindowManager=startwm.sh
 ReconnectScript=reconnectwm.sh
 
 [Security]
-AllowRootLogin={{ xrdp_security.permit_root | string }}
+AllowRootLogin={{ xrdp_security.permit_root | string | lower }}
 MaxLoginRetry={{ xrdp_security.max_login_retry }}
 TerminalServerUsers={{ xrdp_security.tsusers_group }}
 #TerminalServerAdmins=tsadmins
 ; When AlwaysGroupCheck=false access will be permitted
 ; if the group TerminalServerUsers is not defined.
-AlwaysGroupCheck={{ xrdp_security.group_check | string }}
+AlwaysGroupCheck={{ xrdp_security.group_check | string | lower }}
 ; When RestrictOutboundClipboard=all clipboard from the
 ; server is not pushed to the client.
 ; In addition, you can control text/file/image transfer restrictions
@@ -56,7 +56,7 @@ MaxSessions={{ xrdp_session.max_sessions }}
 ; Default: false
 ; if 1, true, or yes, every session will be killed within DisconnectedTimeLimit
 ; seconds after the user disconnects
-KillDisconnected={{ xrdp_session.kill_disconnected }}
+KillDisconnected={{ xrdp_session.kill_disconnected | string | lower }}
 
 ;; DisconnectedTimeLimit (seconds) - wait before kill disconnected sessions
 ; Type: integer
