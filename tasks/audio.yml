@@ -2,16 +2,13 @@
 
 # Audio-related tasks.
 
-- name: install pipewire package
-  package:
-    name: "{{ xrdp_pipewire_package }}"
+- name: Install pipewire package
+  ansible.builtin.package:
+    name: "{{ xrdp_pipewire_package_name }}"
     state: present
 
-- name: determine if libpipewire-module-xrdp is present
-  stat:
-    path: /usr/lib/x86_64-linux-gnu/pipewire-0.3/libpipewire-module-xrdp.so
-  register: xrdp_pipewire_stat
-
-- name: build xrdp pipewire module
-  include_tasks: build-pipewire.yml
-  when: not xrdp_pipewire_stat.stat.exists
+- name: Install xrdp pipewire module
+  ansible.builtin.apt:
+    name: "{{ xrdp_pipewire_module_name }}"
+    default_release: "{% if ansible_facts['distribution_major_version'] == '12' %}bookworm-backports{% endif %}"
+    state: present

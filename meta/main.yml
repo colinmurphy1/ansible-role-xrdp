@@ -1,1 +1,16 @@
+galaxy_info:
+  role_name: xrdp
+  namespace: cmurphy
+  author: Colin Murphy
+  description: Xrdp server role
+  license: MIT
+  min_ansible_version: '2.5'
+  platforms:
+    - name: Debian
+      version:
+        - trixie
+        - bookworm
+    - name: Ubuntu
+      version: all
+
 dependencies: []

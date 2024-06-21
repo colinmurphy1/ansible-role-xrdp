@@ -1,21 +1,21 @@
 ---
 
-- name: include vars
-  include_vars: "{{ ansible_os_family | lower }}.yml"
+- name: Include vars
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: install xrdp
-  package:
+- name: Install xrdp
+  ansible.builtin.package:
     name: "{{ item }}"
   loop: "{{ xrdp_packages }}"
 
-- name: xrdp service
-  service:
-    name: xrdp
-    state: "{{ xrdp_service.state }}"
-    enabled: "{{ xrdp_service.enabled }}"
+- name: Xrdp audio tasks
+  ansible.builtin.include_tasks: audio.yml
+  when:
+    - xrdp_audio
+    - ansible_facts['os_family'] == "Debian"
 
-- name: configure xrdp
-  template:
+- name: Configure xrdp
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: '0644'
@@ -24,17 +24,20 @@
   loop:
     - { src: "xrdp.ini.j2", dest: "/etc/xrdp/xrdp.ini" }
     - { src: "sesman.ini.j2", dest: "/etc/xrdp/sesman.ini" }
-  notify: restart xrdp
+  notify: Restart xrdp
 
 # http://c-nergy.be/blog/?p=12043
-- name: colord polkit profile (Debian/Ubuntu)
-  copy:
+- name: Colord polkit profile (Debian/Ubuntu)
+  ansible.builtin.copy:
     src: 45-allow-colord.pkla
     dest: /etc/polkit-1/localauthority/50-local.d/
     mode: '0644'
     owner: root
     group: root
+  when: ansible_facts['os_family'] == "Debian"
 
-- name: xrdp audio tasks
-  include_tasks: audio.yml
-  when: xrdp_audio == true
+- name: Xrdp service
+  ansible.builtin.service:
+    name: xrdp
+    state: "{{ xrdp_service.state }}"
+    enabled: "{{ xrdp_service.enabled }}"

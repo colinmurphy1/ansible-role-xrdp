@@ -56,23 +56,13 @@ xrdp_session:
 
   # Time to wait before killing disconnected sessions in seconds, 0 disables
   disconnected_time_limit: 0
-  
+
   # Time to wait before disconnecting idle sessions, 0 disables
   idle_time_limit: 0
 
-# Enable audio features
-xrdp_audio: true
+# Enable audio features - only supported in Debian for now
+xrdp_audio: false
 
 # pipewire-module-xrdp related vars
-
-xrdp_pipewire_repo: https://github.com/neutrinolabs/pipewire-module-xrdp.git
-xrdp_pipewire_build_dir: /tmp/pipewire-module-xrdp
-
-# Default package name for pipewire - this is different on Debian
-xrdp_pipewire_package: "pipewire"
-
-# Build dependencies for pipewire-module-xrdp
-xrdp_pipewire_build_package: []
-
-# Cleanup build dependencies for pipewire-module-xrdp
-# xrdp_pipewire_remove_build_package: true
+xrdp_pipewire_package_name: "pipewire"
+xrdp_pipewire_module_name: ""
