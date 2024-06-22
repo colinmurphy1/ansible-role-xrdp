@@ -38,8 +38,8 @@ tcp_nodelay=true
 tcp_keepalive=true
 
 ; set tcp send/recv buffer (for experts)
-tcp_send_buffer_bytes={{ xrdp_buffers.send }}
-tcp_recv_buffer_bytes={{ xrdp_buffers.recv }}
+#tcp_send_buffer_bytes=32768
+#tcp_recv_buffer_bytes=32768
 
 ; security layer can be 'tls', 'rdp' or 'negotiate'
 ; for client compatible layer

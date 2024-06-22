@@ -21,11 +21,6 @@ xrdp_ssl_protocols:
   - TLSv1.2
   - TLSv1.3
 
-# TCP send/recv buffers. Can be increased to improve performance on higher resolution sessions and sessions with audio.
-xrdp_buffers:
-  send: 32768
-  recv: 32768
-
 # Login window title
 xrdp_login_title: ""
 
